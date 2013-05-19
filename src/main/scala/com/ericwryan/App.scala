@@ -47,22 +47,22 @@ object App {
 
   def processNearestNeighbor(matches: java.util.ArrayList[MatOfDMatch], objectKeypoints: MatOfKeyPoint, sceneKeypoints: MatOfKeyPoint) {
     val isBinaryDescriptors = false
-    val mpts1 = new ArrayBuffer[Point]
-    val mpts2 = new ArrayBuffer[Point]
-    val indexes1 = new ArrayBuffer[Int]
-    val indexes2 = new ArrayBuffer[Int]
+    val objectPoints = new ArrayBuffer[Point]
+    val scenePoints = new ArrayBuffer[Point]
+    val objectIndices = new ArrayBuffer[Int]
+    val sceneIndices = new ArrayBuffer[Int]
 
     for (i <- 1 to matches.size - 1) {
       if (isBinaryDescriptors || //Binary, just take the nearest
         matches.get(i).toList.get(0).distance <= NNDR_RATIO * matches.get(i).toList.get(1).distance) {
 
         val objectIndex = matches.get(i).toArray()(0).queryIdx
-        mpts1.append(objectKeypoints.toArray()(objectIndex).pt)
-        indexes1.append(objectIndex)
+        objectPoints.append(objectKeypoints.toArray()(objectIndex).pt)
+        objectIndices.append(objectIndex)
 
         val sceneIndex = matches.get(i).toArray()(0).queryIdx
-        mpts2.append(sceneKeypoints.toArray()(sceneIndex).pt)
-        indexes2.append(sceneIndex)
+        scenePoints.append(sceneKeypoints.toArray()(sceneIndex).pt)
+        sceneIndices.append(sceneIndex)
       }
     }
 
@@ -71,7 +71,7 @@ object App {
     //    printf(indexes1.toArray.toString)
     //    printf(indexes2.toArray.toString)
 
-    (mpts1.toArray, mpts2.toArray, indexes1.toArray, indexes2.toArray)
+    (objectPoints.toArray, scenePoints.toArray, objectIndices.toArray, sceneIndices.toArray)
   }
 
   def findMatchesBruteForce(objDescriptors: Mat, sceneDescriptors: Mat): java.util.ArrayList[MatOfDMatch] = {
