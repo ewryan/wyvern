@@ -22,7 +22,8 @@ class BruteForceMatcher(objectImage: Image, sceneImage: Image) {
     val matchingResult = new MatchingResult(objectImage, sceneImage)
 
     for (i <- 1 to matches.size - 1) {
-      if (potentialMatch(i)) {
+      matchingResult.incrementMatchesEvaluated
+      if (foundIndividualMatch(i)) {
         val objectIndex = matches.get(i).toArray()(0).queryIdx
         val objectPoint = objectImage.keypoints.toArray()(objectIndex).pt
         val sceneIndex = matches.get(i).toArray()(0).trainIdx
@@ -35,8 +36,9 @@ class BruteForceMatcher(objectImage: Image, sceneImage: Image) {
     matchingResult
   }
 
-  def potentialMatch(i: Int): Boolean = {
+  def foundIndividualMatch(i: Int): Boolean = {
     IS_BINARY_DESCRIPTORS || //Binary, just take the nearest
       matches.get(i).toList.get(0).distance <= NNDR_RATIO * matches.get(i).toList.get(1).distance
   }
+
 }

@@ -10,14 +10,18 @@ object App {
     time {
       val rule = new Image("/images/starbucks_rule1.jpg")
       val scene = new Image("/images/starbucks_target1.jpg")
+//      val scene = new Image("/images/dog_target1.jpg")
 
       val matcher: BruteForceMatcher = new BruteForceMatcher(rule, scene)
       val result: MatchingResult = matcher.process
 
-      println(result.objectIndices.toString())
-      println(result.sceneIndices.toString())
-      println(result.objectPoints.toString())
-      println(result.scenePoints.toString())
+//      println(result.objectIndices.toString())
+//      println(result.sceneIndices.toString())
+//      println(result.objectPoints.toString())
+//      println(result.scenePoints.toString())
+
+
+      println("Is Match: " + result.isMatch)
     }
   }
 
